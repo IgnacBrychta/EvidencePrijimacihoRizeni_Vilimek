@@ -14,6 +14,7 @@ internal class Db
 			}
 	public static void test()
 	{
+		return;
 		using SqlConnection connection = new SqlConnection(connectionString);
 		using SqlCommand command = new SqlCommand("SELECT * from user_idk_complicated_name", connection);
 		connection.Open();

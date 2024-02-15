@@ -6,11 +6,19 @@ using System.Threading.Tasks;
 
 namespace EvidencePrijimacihoRizeni_Vilimek;
 
-internal sealed class PrihlaskaStredniOdbornaskola : Prihlaska
+public sealed class PrihlaskaStredniOdbornaSkola : Prihlaska
 {
-	public PrihlaskaStredniOdbornaskola(string jmeno, string prijmeni, DateTime datumNarozeni, Obor obor, int bodyPrijimacihoRizeni, bool prijat)
-		: base(jmeno, prijmeni, datumNarozeni, obor, bodyPrijimacihoRizeni, prijat)
+	public OborStredni obor;
+	public PrihlaskaStredniOdbornaSkola(int id, string jmeno, string prijmeni, DateTime datumNarozeni, OborStredni obor, int bodyPrijimacihoRizeni, bool prijat)
+		: base(id, jmeno, prijmeni, datumNarozeni, bodyPrijimacihoRizeni, prijat)
 	{
+		this.obor = obor;
+	}
 
+	public override int IndexOboru => (int)obor;
+
+	public override string ZiskatZakladniInformace()
+	{
+		return base.ZiskatZakladniInformace() + $" - {obor}";
 	}
 }
