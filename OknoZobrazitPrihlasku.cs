@@ -8,21 +8,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace EvidencePrijimacihoRizeni_Vilimek
+namespace EvidencePrijimacihoRizeni_Vilimek;
+
+public partial class OknoZobrazitPrihlasku : VychoziPrihlaskoveOkno
 {
-	public partial class OknoZobrazitPrihlasku : VychoziPrihlaskoveOkno
+	public OknoZobrazitPrihlasku(Prihlaska prihlaska) : base(prihlaska)
 	{
-		public OknoZobrazitPrihlasku(Prihlaska prihlaska) : base(prihlaska)
-		{
-			InitializeComponent();
-			Text = prihlaska.Informace;
-			button_ok.Click += (s, e) => { Close(); };
-			prihlaskaNaStredni = prihlaska is PrihlaskaStredniOdbornaSkola;
-			NaplnitComboBoxDostupnymiObory();
+		InitializeComponent();
+		Text = prihlaska.Informace;
+		button_ok.Click += (s, e) => { Close(); };
+		prihlaskaNaStredni = prihlaska is PrihlaskaStredniOdbornaSkola;
+		NaplnitComboBoxDostupnymiObory();
 
-			ZobrazitUdajeUlozenaPrihlaska();
+		ZobrazitUdajeUlozenaPrihlaska();
 
-			ZakazatUpravovaniUdaju();
-		}
+		ZakazatUpravovaniUdaju();
 	}
 }

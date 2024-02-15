@@ -41,16 +41,46 @@ public partial class HlavniOkno : Form
 		Load += HlavniOkno_Load;
 
 		/*===========*/
-		cestaSouborStredni = @"C:\Users\Ignác\source\repos\IgnacBrychta\EvidencePrijimacihoRizeni_Vilimek\data mock\prihlaska stredni mock 3.txt";
+		cestaSouborStredni = @"C:\Users\Ignác\source\repos\IgnacBrychta\EvidencePrijimacihoRizeni_Vilimek\data mock\mock prihlasky na stredni.txt";
+		cestaSouborVyssi = @"C:\Users\Ignác\source\repos\IgnacBrychta\EvidencePrijimacihoRizeni_Vilimek\data mock\mock prihlasky na vyssi odbornou.txt";
 		NacistPrihlasky(cestaSouborStredni, typeof(PrihlaskaStredniOdbornaSkola));
+		textBoxCestaSouboruStredni.Text = cestaSouborStredni;
+
+		NacistPrihlasky(cestaSouborVyssi, typeof(PrihlaskaVyssiOdbornaSkola));
 		ObnovitSeznamPrihlasek();
 		PovolitPrihlaskovaTlacitka();
-		textBoxCestaSouboruStredni.Text = cestaSouborStredni;
+		textBoxCestaVyssiSkoly.Text = cestaSouborVyssi;
 	}
 
 	private void ButtonVyhledatPrihlasku_Click(object? sender, EventArgs e)
 	{
-		new OknoVyhledatPrihlasku(prihlaskyStredni, prihlaskyVyssi).Show();
+		new OknoVyhledatPrihlasku(prihlaskyStredni, prihlaskyVyssi, AktualizovatZvolenyIndex).Show();
+	}
+
+	private object? AktualizovatZvolenyIndex(Prihlaska nalezenaPrihlaska)
+	{
+		foreach (Prihlaska prihlaska in prihlaskyStredni)
+		{
+			if(nalezenaPrihlaska == prihlaska)
+			{
+				zvolenySeznam = listBoxStredniSkola;
+				listBoxVyssiOdbornaSkola.SelectedIndex = -1;
+				listBoxStredniSkola.SelectedIndex = listBoxStredniSkola.Items.IndexOf(prihlaska);
+				return null;
+			}
+		}
+
+		foreach (Prihlaska prihlaska in prihlaskyVyssi)
+		{
+			if (nalezenaPrihlaska == prihlaska)
+			{
+				zvolenySeznam = listBoxVyssiOdbornaSkola;
+				listBoxStredniSkola.SelectedIndex = -1;
+				listBoxVyssiOdbornaSkola.SelectedIndex = listBoxVyssiOdbornaSkola.Items.IndexOf(prihlaska);
+				return null;
+			}
+		}
+		return null;
 	}
 
 	private void ButtonZobrazitPrihlasky_Click(object? sender, EventArgs e)

@@ -9,6 +9,11 @@ namespace EvidencePrijimacihoRizeni_Vilimek;
 public enum OborStredni
 {
 	Peklo = 0,
+	Anime,
+	Hentai,
+	Sexarej,
+	SexArray3D,
+	HermafroditTomasZ,
 	Utrpeni,
 	Satanismus,
 	Podsveti,
@@ -24,5 +29,7 @@ public enum OborVyssiOdborna
 	KolapsSpolecnosti,
 	Apokalypsa,
 	ZombieApokalypsa,
-	GlobalniVypadekInternetu
+	GlobalniVypadekInternetu,
+	MechApocalypse,
+	PremieraJaromiraSoukupa
 }

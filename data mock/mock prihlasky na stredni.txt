@@ -1,5 +1,5 @@
 Id;jmeno;prijmeni;datumNarozeni;obor;bodyPrijimacihoRizeni;prijat
-1;Britt;Collough;03.09.1995;1;27;true
+1;Britt;Collough;03.09.1995;90;27;true
 2;Bertina;Prendergast;02.06.1995;1;35;true
 3;Selig;Lacy;21.12.1998;4;19;false
 4;Jedidiah;Acedo;22.07.2000;2;7;false
