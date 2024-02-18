@@ -1,0 +1,1 @@
+﻿DBCC CHECKIDENT ('PrihlaskyStredni', RESEED, 0);

@@ -12,7 +12,6 @@ public enum OborStredni
 	Anime,
 	Hentai,
 	Sexarej,
-	SexArray3D,
 	HermafroditTomasZ,
 	Utrpeni,
 	Satanismus,

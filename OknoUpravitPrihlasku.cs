@@ -1,10 +1,12 @@
-﻿namespace EvidencePrijimacihoRizeni_Vilimek;
+﻿using System.Runtime.Serialization;
+
+namespace EvidencePrijimacihoRizeni_Vilimek;
 
 public partial class OknoUpravitPrihlasku : VychoziPrihlaskoveOkno
 {
 	DbValuesLimits limits;
-	Action ObnovitSeznamPrihlasek;
-	public OknoUpravitPrihlasku(Prihlaska prihlaska, DbValuesLimits limits, Action ObnovitSeznamPrihlasek) : base(prihlaska)
+	Func<Prihlaska, object?> ObnovitSeznamPrihlasekUpravitInformace;
+	public OknoUpravitPrihlasku(Prihlaska prihlaska, DbValuesLimits limits, Func<Prihlaska, object?> ObnovitSeznamPrihlasekUpravitInformace) : base(prihlaska)
 	{
 		InitializeComponent();
 		Text = prihlaska.Informace;
@@ -12,7 +14,7 @@ public partial class OknoUpravitPrihlasku : VychoziPrihlaskoveOkno
 		button_potvrditZmeny.Click += Button_potvrditZmeny_Click;
 		button_zrusit.Click += Button_zrusit_Click;
 		this.limits = limits;
-		this.ObnovitSeznamPrihlasek = ObnovitSeznamPrihlasek;
+		this.ObnovitSeznamPrihlasekUpravitInformace = ObnovitSeznamPrihlasekUpravitInformace;
 
 		prihlaskaNaStredni = prihlaska is PrihlaskaStredniOdbornaSkola;
 		radioButton_stredni.Checked = prihlaskaNaStredni;
@@ -43,16 +45,24 @@ public partial class OknoUpravitPrihlasku : VychoziPrihlaskoveOkno
 	{
 		bool bodyPrijimaciRizeniOK = int.TryParse(textBox_bodyPrijimaciRizeni.Text, out int bodyPrijimaciRizeni);
 		bool maturitniZkouskaOK = decimal.TryParse(textBox_prumerZnamekMatZkouska.Text, out decimal bodyMaturitniZkouska) || prihlaskaNaStredni;
+		bool nastalaZmena = false;
 		if (bodyPrijimaciRizeniOK && maturitniZkouskaOK && Prihlaska.JsouUdajeSpravne(limits, textBox_jmeno.Text, textBox_prijmeni.Text, monthCalendar_datumNarozeni.SelectionStart))
 		{
-			prihlaska!.jmeno = textBox_jmeno.Text;
+			nastalaZmena |= prihlaska!.jmeno != textBox_jmeno.Text;
+			prihlaska.jmeno = textBox_jmeno.Text;
+			nastalaZmena |= prihlaska.prijmeni != textBox_prijmeni.Text;
 			prihlaska.prijmeni = textBox_prijmeni.Text;
+			nastalaZmena |= prihlaska.datumNarozeni != monthCalendar_datumNarozeni.SelectionStart;
 			prihlaska.datumNarozeni = monthCalendar_datumNarozeni.SelectionStart;
+			nastalaZmena |= prihlaska.bodyPrijimacihoRizeni != bodyPrijimaciRizeni;
 			prihlaska.bodyPrijimacihoRizeni = bodyPrijimaciRizeni;
+			nastalaZmena |= prihlaska.prijat != radioButton_prijat.Checked;
 			prihlaska.prijat = radioButton_prijat.Checked;
+			nastalaZmena |= prihlaska.IndexOboru != comboBox_obor.SelectedIndex;
 			if (!prihlaskaNaStredni)
 			{
 				PrihlaskaVyssiOdbornaSkola p = (PrihlaskaVyssiOdbornaSkola)prihlaska;
+				nastalaZmena |= p.prumerZnamekMaturitniZkousky != bodyMaturitniZkouska;
 				p.prumerZnamekMaturitniZkousky = bodyMaturitniZkouska;
 				p.obor = (OborVyssiOdborna)comboBox_obor.SelectedIndex;
 			}
@@ -61,7 +71,8 @@ public partial class OknoUpravitPrihlasku : VychoziPrihlaskoveOkno
 				PrihlaskaStredniOdbornaSkola p = (PrihlaskaStredniOdbornaSkola)prihlaska;
 				p.obor = (OborStredni)comboBox_obor.SelectedIndex;
 			}
-			ObnovitSeznamPrihlasek();
+			prihlaska.DbStav = nastalaZmena ? DbStav.Upravena : prihlaska.DbStav;
+			ObnovitSeznamPrihlasekUpravitInformace(prihlaska);
 			Close();
 		}
 		else

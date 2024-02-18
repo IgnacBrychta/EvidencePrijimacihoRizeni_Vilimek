@@ -46,6 +46,8 @@ public partial class OknoNovaPrihlaska : VychoziPrihlaskoveOkno
 				radioButton_prijat.Checked
 				);
 			prihlaska = p;
+			p.DbStav = DbStav.Nova;
+
 			udajeOK = Prihlaska.JsouUdajeSpravne(limits, textBox_jmeno.Text, textBox_prijmeni.Text, monthCalendar_datumNarozeni.SelectionStart);
 		}
 		else
@@ -61,12 +63,15 @@ public partial class OknoNovaPrihlaska : VychoziPrihlaskoveOkno
 				prumerMatZkouska
 				);
 			prihlaska = p;
+			p.DbStav = DbStav.Nova;
+
 			udajeOK = PrihlaskaVyssiOdbornaSkola.JsouUdajeSpravne(limits, textBox_jmeno.Text, textBox_prijmeni.Text, monthCalendar_datumNarozeni.SelectionStart, prumerMatZkouska);
 		}
+		udajeOK &= prihlaska.IndexOboru != -1;
 		if (bodyPrijimaciRizeniOK && maturitniZkouskaOK && udajeOK)
 		{
 			_ = NovaPrihlaskaMetoda(prihlaska);
-			if (prednostnePrijat && prihlaska is PrihlaskaVyssiOdbornaSkola) _ = MessageBox.Show(
+			if (prednostnePrijat && prihlaska is PrihlaskaVyssiOdbornaSkola && !radioButton_prijat.Checked) _ = MessageBox.Show(
 				$"Uchazeč byl kvůli svému maturitnímu průměru ({textBox_prumerZnamekMatZkouska.Text}) automaticky přijat, jelikož je nižší než limit ({limits.MaturitniPrumerProPrijeti}), přihlášku však lze stále upravit.",
 				"Uchazeč automaticky přijat",
 				MessageBoxButtons.OK,

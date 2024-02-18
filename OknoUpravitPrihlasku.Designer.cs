@@ -28,22 +28,11 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			label2 = new Label();
 			groupBox11 = new GroupBox();
 			button_zrusit = new Button();
 			button_potvrditZmeny = new Button();
 			groupBox11.SuspendLayout();
 			SuspendLayout();
-			// 
-			// label2
-			// 
-			label2.AutoSize = true;
-			label2.Location = new Point(500, 464);
-			label2.Margin = new Padding(2, 0, 2, 0);
-			label2.Name = "label2";
-			label2.Size = new Size(89, 15);
-			label2.TabIndex = 1;
-			label2.Text = "upravit prihlasu";
 			// 
 			// groupBox11
 			// 
@@ -84,18 +73,14 @@
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(638, 486);
 			Controls.Add(groupBox11);
-			Controls.Add(label2);
 			Margin = new Padding(2, 1, 2, 1);
 			Name = "OknoUpravitPrihlasku";
 			Text = "OknoUpravitPrihlasku";
 			groupBox11.ResumeLayout(false);
 			ResumeLayout(false);
-			PerformLayout();
 		}
 
 		#endregion
-
-		private Label label2;
 		private GroupBox groupBox11;
 		private Button button_zrusit;
 		private Button button_potvrditZmeny;

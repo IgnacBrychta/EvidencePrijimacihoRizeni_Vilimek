@@ -10,4 +10,6 @@ public class DbValuesLimits
 	public decimal NejlepsiZnamka { init; get; }
 	public decimal NejhorsiZnamka { init; get; }
 	public decimal MaturitniPrumerProPrijeti { init; get; }
+	public decimal OborStredniNejvyssiIndex { init; get; }
+	public decimal OborVyssiOdbornaNejvyssiIndex { init; get; }
 }

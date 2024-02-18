@@ -30,4 +30,17 @@ public sealed class PrihlaskaVyssiOdbornaSkola : Prihlaska
 			prumerZnamekMaturitniZkousky >= limits.NejlepsiZnamka &&
 			prumerZnamekMaturitniZkousky <= limits.NejhorsiZnamka;
 	}
+
+	public override bool JsouPrihlaskyStejneKromeId(Prihlaska p)
+	{
+		bool porovnani = base.JsouPrihlaskyStejneKromeId(p);
+		if (p is PrihlaskaVyssiOdbornaSkola pVyssi)
+			porovnani &= pVyssi.prumerZnamekMaturitniZkousky == prumerZnamekMaturitniZkousky;
+		return porovnani;
+	}
+
+	public override string ZiskatTvarProZapsani(DbValuesLimits limits)
+	{
+		return base.ZiskatTvarProZapsani(limits) + limits.Delimiter + prumerZnamekMaturitniZkousky.ToString();
+	}
 }

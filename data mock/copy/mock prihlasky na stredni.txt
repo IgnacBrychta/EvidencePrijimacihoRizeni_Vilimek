@@ -1,15 +1,18 @@
-MaxId=503
+MaxId=500
 Id;jmeno;prijmeni;datumNarozeni;obor;bodyPrijimacihoRizeni;prijat
-2;Bertina;Prendergast;01/11/1899 00:00:00;1;35;True
-4;Jedidiah;Acedo;01.10.1753;2;7;True
+1;Britt;Collough;03.09.1995;2;27;true
+2;Bertina;Prendergast;02.06.1995;1;35;true
+3;Selig;Lacy;21.12.1998;4;19;false
+4;Jedidiah;Acedo;22.07.2000;2;7;false
 5;Danna;Wyldish;26.09.2003;0;10;false
-7;Curt;Shimony;18.01.1999;0;77;False
+6;Godiva;Tomaszek;11.07.2002;3;32;true
+7;Curt;Shimony;18.01.1999;4;77;false
 8;Joshuah;Malby;21.11.1999;3;18;false
 9;Christean;MacIver;16.03.2000;2;67;false
 10;Kacy;Sampey;21.01.2003;1;35;false
 11;Aldis;Well;10.08.2002;4;13;true
 12;Calhoun;Predohl;24.01.1998;0;32;true
-13;Emelyne;Cunney;01.04.2001;6;99;False
+13;Emelyne;Cunney;01.04.2001;4;99;false
 14;Saw;Danby;23.01.1999;4;5;false
 15;Isidro;Mc Mechan;30.05.1996;3;94;true
 16;Amandy;Cridland;09.10.1995;1;28;false
@@ -497,6 +500,3 @@ Id;jmeno;prijmeni;datumNarozeni;obor;bodyPrijimacihoRizeni;prijat
 498;Angele;Legister;20.03.1997;3;55;true
 499;Richard;Petrescu;18.09.1999;2;55;false
 500;Rees;Duchan;13.06.2003;2;42;true
-501;xd;:(;01.11.1988;0;0;True
-502;dffddf;dsdfdfdf;30.12.1986;4;12;True
-503;' OR 1=1 #--;sdsd;29.08.1988;3;1;True
