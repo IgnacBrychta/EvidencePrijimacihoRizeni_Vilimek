@@ -79,7 +79,7 @@ public partial class HlavniOkno : Form
 		MessageBox.Show(@"
 			Tento program jsem vyvíjel jak na 10"" monitoru s 200% škálováním,
 			tak na 25"" monitoru se 100% škálováním, kvùli èemuž se mi dosáhnout konzistentního vzhledu, proto
-			doporuèuji tento program spouštìt se systémovým 100% škálováním"
+			doporuèuji tento program spouštìt se systémovým 100% škálováním."
 			.Replace("\t", "").Replace(Environment.NewLine, ""),
 			"Informace ohlednì zobrazování",
 			MessageBoxButtons.OK,
