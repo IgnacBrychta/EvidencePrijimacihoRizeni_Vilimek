@@ -13,6 +13,7 @@ public partial class VychoziPrihlaskoveOkno : Form
 		radioButton_stredni.CheckedChanged += RadioButton_stredni_CheckedChanged;
 		monthCalendar_datumNarozeni.MaxSelectionCount = 1;
 		Load += VychoziPrihlaskoveOkno_Load;
+		Icon = new Icon(HlavniOkno.IconFilePath);
 	}
 
 	public VychoziPrihlaskoveOkno() { }

@@ -6,11 +6,23 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>vilimek-s-kuretem.ico</ApplicationIcon>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <Title>Ignácova evidence uchazečů</Title>
+    <Authors>Ignác Brychta</Authors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="vilimek-s-kuretem.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.16" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="res\" />
   </ItemGroup>
 
 </Project>

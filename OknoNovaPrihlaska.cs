@@ -15,14 +15,31 @@ public partial class OknoNovaPrihlaska : VychoziPrihlaskoveOkno
 	DbValuesLimits limits;
 	Func<Prihlaska, object?> NovaPrihlaskaMetoda;
 	bool prednostnePrijat = false;
-	public OknoNovaPrihlaska(DbValuesLimits limits, Func<Prihlaska, object?> NovaPrihlaskaMetoda) : base(null!)
+	string? cestaStredni;
+	string? cestaVyssi;
+	public OknoNovaPrihlaska(DbValuesLimits limits, Func<Prihlaska, object?> NovaPrihlaskaMetoda, string? cestaStredni, string? cestaVyssi) : base(null!)
 	{
 		InitializeComponent();
+		this.limits = limits;
+		this.NovaPrihlaskaMetoda = NovaPrihlaskaMetoda;
+		
+		this.cestaStredni = cestaStredni;
+		this.cestaVyssi = cestaVyssi;
+		if(cestaStredni is null || cestaVyssi is null)
+		{
+			MessageBox.Show(
+				"Neexistuje platná cesta pro soubory pro uložení",
+				"Nelze pokračovat",
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Error
+				);
+			Close();
+			return;
+		}
+
 		Text = "Vytvořit novou přihlášku";
 		prihlaskaNaStredni = true;
 		button_vytvorit.Click += Button_vytvorit_Click;
-		this.limits = limits;
-		this.NovaPrihlaskaMetoda = NovaPrihlaskaMetoda;
 		NaplnitComboBoxDostupnymiObory();
 		groupBox_bodyMatZkouska.Visible = !prihlaskaNaStredni;
 		button_zrusit.Click += (s, e) => { Close(); };

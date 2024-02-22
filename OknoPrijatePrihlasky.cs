@@ -22,6 +22,7 @@ public partial class OknoPrijatePrihlasky : Form
 		this.prihlaskyStredni = prihlaskyStredni;
 		this.Load += (s, e) => { MaximumSize = Size; MinimumSize = Size; };
 		Text = "Přijaté přihlášky";
+		Icon = new Icon(HlavniOkno.IconFilePath);
 	}
 
 	public OknoPrijatePrihlasky() { }

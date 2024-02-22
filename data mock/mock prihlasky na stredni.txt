@@ -1,10 +1,10 @@
 MaxId=503
 Id;jmeno;prijmeni;datumNarozeni;obor;bodyPrijimacihoRizeni;prijat
-2;Bertina;Prendergast;01/11/1899 00:00:00;1;35;True
-4;Jedidiah;Acedo;01.10.1753;2;7;True
-5;Danna;Wyldish;26.09.2003;0;10;false
+2;Poltergeist;Prendergast;01.11.1899;1;35;True
+4;ZbožňujuHentai;ProtoToStuduju;06.09.1769;2;69;True
+5;Fata;Morgana;26.09.2003;0;10;True
 7;Curt;Shimony;18.01.1999;0;77;False
-8;Joshuah;Malby;21.11.1999;3;18;false
+8;Joshuah;Malý;21.11.1999;3;420;False
 9;Christean;MacIver;16.03.2000;2;67;false
 10;Kacy;Sampey;21.01.2003;1;35;false
 11;Aldis;Well;10.08.2002;4;13;true

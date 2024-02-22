@@ -91,5 +91,6 @@ public partial class OknoVyhledatPrihlasku : VychoziPrihlaskoveOkno
 		comboBox_obor.Items.Clear();
 		NaplnitComboBoxDostupnymiObory();
 		ZobrazitUdajeUlozenaPrihlaska();
+		groupBox_bodyMatZkouska.Visible = !prihlaskaNaStredni;
 	} 
 }

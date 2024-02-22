@@ -23,5 +23,6 @@ public partial class OknoZobrazitPrihlasku : VychoziPrihlaskoveOkno
 		ZobrazitUdajeUlozenaPrihlaska();
 
 		ZakazatUpravovaniUdaju();
+		groupBox_bodyMatZkouska.Visible = !prihlaskaNaStredni;
 	}
 }

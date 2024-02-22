@@ -5,8 +5,7 @@ namespace EvidencePrijimacihoRizeni_Vilimek;
 internal class Db : IDisposable
 {
 	private bool disposedValue;
-
-	SqlConnection pripojeni;
+	readonly SqlConnection pripojeni;
 	public Db(string pripojovaciRetezec)
 	{
 		pripojeni = new SqlConnection(pripojovaciRetezec);
@@ -14,31 +13,40 @@ internal class Db : IDisposable
 	}
 	public DialogResult SynchronizovatPrihlasku(Prihlaska prihlaska)
 	{
-		DialogResult result = DialogResult.Abort;
-#warning dořešit mišmaš id mezi db a txt - co když v txt smažu řádek, db je prázdná a pak to tam chci vše naházet najednou?
 		string textPrikazu;
 		using SqlCommand prikaz = new SqlCommand();
+		int ovlivneneRadky = 0;
 		switch((prihlaska is PrihlaskaStredniOdbornaSkola, prihlaska.DbStav))
 		{
 			case (true, DbStav.Nova):
 				textPrikazu = @"
-				INSERT INTO PrihlaskyStredni (Jmeno, Prijmeni, DatumNarozeni, BodyPrijimaciRizeni, Prijat, Obor)
+				INSERT INTO PrihlaskyStredni (Id, Jmeno, Prijmeni, DatumNarozeni, BodyPrijimaciRizeni, Prijat, Obor)
 				--OUTPUT INSERTED.Id				
-				VALUES (@Jmeno, @Prijmeni, @DatumNarozeni, @BodyPrijimaciRizeni, @Prijat, @Obor)
+				VALUES (@Id, @Jmeno, @Prijmeni, @DatumNarozeni, @BodyPrijimaciRizeni, @Prijat, @Obor)
 				";
 				NastavitSpolecneParametry(prikaz, prihlaska, textPrikazu);
+				try
+				{
+					ovlivneneRadky = prikaz.ExecuteNonQuery();
+				}
+				catch (Exception) { }
 				//int idStredni = (int)prikaz.ExecuteScalar();
 				//prihlaska.Id = idStredni;
 				prihlaska.DbStav = DbStav.Aktualni;
 				break;
 			case (false, DbStav.Nova):
 				textPrikazu = @"
-				INSERT INTO PrihlaskyVyssiOdborna (Jmeno, Prijmeni, DatumNarozeni, BodyPrijimaciRizeni, Prijat, Obor, PrumerZnamekMaturitniZkousky)
+				INSERT INTO PrihlaskyVyssiOdborna (Id, Jmeno, Prijmeni, DatumNarozeni, BodyPrijimaciRizeni, Prijat, Obor, PrumerZnamekMaturitniZkousky)
 				--OUTPUT INSERTED.Id				
-				VALUES (@Jmeno, @Prijmeni, @DatumNarozeni, @BodyPrijimaciRizeni, @Prijat, @Obor, @PrumerZnamekMaturitniZkousky)
+				VALUES (@Id, @Jmeno, @Prijmeni, @DatumNarozeni, @BodyPrijimaciRizeni, @Prijat, @Obor, @PrumerZnamekMaturitniZkousky)
 				";
 				NastavitSpolecneParametry(prikaz, prihlaska, textPrikazu);
 				prikaz.Parameters.AddWithValue("PrumerZnamekMaturitniZkousky", ((PrihlaskaVyssiOdbornaSkola)prihlaska).prumerZnamekMaturitniZkousky);
+				try
+				{
+					ovlivneneRadky = prikaz.ExecuteNonQuery();
+				}
+				catch (Exception) { }
 				//int idVyssi = (int)prikaz.ExecuteScalar();
 				//prihlaska.Id = idVyssi;
 				prihlaska.DbStav = DbStav.Aktualni;
@@ -50,7 +58,7 @@ internal class Db : IDisposable
 				prikaz.CommandText = textPrikazu;
 				prikaz.Parameters.AddWithValue("Id", prihlaska.Id);
 				prikaz.Connection = pripojeni;
-				_ = prikaz.ExecuteNonQuery(); 
+				ovlivneneRadky = prikaz.ExecuteNonQuery(); 
 				prihlaska.DbStav = DbStav.Zadny;
 #warning odstraněno?
 				break;
@@ -61,7 +69,11 @@ internal class Db : IDisposable
 				prikaz.CommandText = textPrikazu;
 				prikaz.Parameters.AddWithValue("Id", prihlaska.Id);
 				prikaz.Connection = pripojeni;
-				_ = prikaz.ExecuteNonQuery();
+				try
+				{
+					ovlivneneRadky = prikaz.ExecuteNonQuery();
+				}
+				catch (Exception) { }
 				prihlaska.DbStav = DbStav.Zadny;
 #warning odstraněno?
 				break;
@@ -78,8 +90,11 @@ internal class Db : IDisposable
 				WHERE Id = @Id
 				";
 				NastavitSpolecneParametry(prikaz, prihlaska, textPrikazu);
-				prikaz.Parameters.AddWithValue("Id", prihlaska.Id);
-				_ = prikaz.ExecuteNonQuery();
+				try
+				{
+					ovlivneneRadky = prikaz.ExecuteNonQuery();
+				}
+				catch (Exception) { }
 				prihlaska.DbStav = DbStav.Aktualni;
 #warning aktualizováno?
 				break;
@@ -98,19 +113,23 @@ internal class Db : IDisposable
 				";
 				NastavitSpolecneParametry(prikaz, prihlaska, textPrikazu);
 				prikaz.Parameters.AddWithValue("PrumerZnamekMaturitniZkousky", ((PrihlaskaVyssiOdbornaSkola)prihlaska).prumerZnamekMaturitniZkousky);
-				prikaz.Parameters.AddWithValue("Id", prihlaska.Id);
-				_ = prikaz.ExecuteNonQuery();
+				try
+				{
+					ovlivneneRadky = prikaz.ExecuteNonQuery();
+				}
+				catch (Exception) { }
 				prihlaska.DbStav = DbStav.Aktualni;
 #warning aktualizováno?
 				break;
 		}
-		return result;
+		return ovlivneneRadky == 1 ? DialogResult.OK : DialogResult.Abort;
 	}
-
+#warning změnit rozsah id u přihlášek
 	private void NastavitSpolecneParametry(SqlCommand prikaz, Prihlaska prihlaska, string textPrikazu)
 	{
 		prikaz.CommandText = textPrikazu;
 		prikaz.Connection = pripojeni;
+		prikaz.Parameters.AddWithValue("Id", prihlaska.Id);
 		prikaz.Parameters.AddWithValue("Jmeno", prihlaska.jmeno);
 		prikaz.Parameters.AddWithValue("Prijmeni", prihlaska.prijmeni);
 		prikaz.Parameters.AddWithValue("DatumNarozeni", prihlaska.datumNarozeni);

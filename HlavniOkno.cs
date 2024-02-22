@@ -30,6 +30,13 @@ public partial class HlavniOkno : Form
 	int nejvyssiIdStredni = -1;
 	int nejvyssiIdVyssiOdborna = -1;
 	Db db;
+	public static float scaleX;
+	public static float scaleY;
+	public static float offsetScaleX = 0f;
+	public static float offsetScaleY = 0f;
+	public RectangleF resizedScreen;
+	Rectangle originalScreen = new Rectangle(0, 0, 2560, 1520);
+	public static string IconFilePath => "../../../res/vilimek-s-kuretem.ico";
 	public HlavniOkno()
 	{
 		InitializeComponent();
@@ -65,8 +72,21 @@ public partial class HlavniOkno : Form
 		toolStripMenuItemZobrazitPrijate.Click += ButtonZobrazitPrijate_Click;
 
 		db = new Db("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Ignác\\source\\repos\\IgnacBrychta\\EvidencePrijimacihoRizeni_Vilimek\\db\\db\\evidence.mdf;Integrated Security=True;Connect Timeout=30");
+		Icon = new Icon(IconFilePath);
 
+		SetColorTheme(this);
+		SetControlTheme(this);
+		MessageBox.Show(@"
+			Tento program jsem vyvíjel jak na 10"" monitoru s 200% škálováním,
+			tak na 25"" monitoru se 100% škálováním, kvùli èemuž se mi dosáhnout konzistentního vzhledu, proto
+			doporuèuji tento program spouštìt se systémovým 100% škálováním"
+			.Replace("\t", "").Replace(Environment.NewLine, ""),
+			"Informace ohlednì zobrazování",
+			MessageBoxButtons.OK,
+			MessageBoxIcon.Information
+		);
 		/*===========*/
+		return;
 		cestaSouborStredni = @"C:\Users\Ignác\source\repos\IgnacBrychta\EvidencePrijimacihoRizeni_Vilimek\data mock\mock prihlasky na stredni.txt";
 		cestaSouborVyssi = @"C:\Users\Ignác\source\repos\IgnacBrychta\EvidencePrijimacihoRizeni_Vilimek\data mock\mock prihlasky na vyssi odbornou.txt";
 		NacistPrihlasky(cestaSouborStredni, typeof(PrihlaskaStredniOdbornaSkola));
@@ -78,6 +98,20 @@ public partial class HlavniOkno : Form
 		textBoxCestaVyssiSkoly.Text = cestaSouborVyssi;
 	}
 
+	public static void SetColorTheme(Control parent)
+	{
+		foreach (Control control in parent.Controls)
+		{
+			SetControlTheme(control);
+			if (control.HasChildren) SetColorTheme(control);
+		}
+	}
+
+	public static void SetControlTheme(Control control)
+	{
+		control.BackColor = Color.Black;
+		control.ForeColor = Color.White;
+	}
 	private void HlavniOkno_FormClosed(object? sender, FormClosedEventArgs e)
 	{
 		db.Dispose();
@@ -85,23 +119,52 @@ public partial class HlavniOkno : Form
 
 	private void ButtonSynchronizace_Click(object? sender, EventArgs e)
 	{
+		DialogResult result = DialogResult.None;
 		foreach (Prihlaska prihlaska in prihlaskyStredni)
 		{
 			if (prihlaska.DbStav != DbStav.Aktualni && prihlaska.DbStav != DbStav.Zadny)
-				db.SynchronizovatPrihlasku(prihlaska);
+				result |= db.SynchronizovatPrihlasku(prihlaska);
 		}
 
 		foreach (Prihlaska prihlaska in prihlaskyVyssi)
 		{
 			if (prihlaska.DbStav != DbStav.Aktualni && prihlaska.DbStav != DbStav.Zadny)
-				db.SynchronizovatPrihlasku(prihlaska);
+				result |= db.SynchronizovatPrihlasku(prihlaska);
 		}
 
 		foreach (Prihlaska prihlaska in smazanePrihlasky)
 		{
-			db.SynchronizovatPrihlasku(prihlaska);
+			result |= db.SynchronizovatPrihlasku(prihlaska);
 		}
 		smazanePrihlasky.Clear();
+
+		if(result.HasFlag(DialogResult.Abort))
+		{
+			MessageBox.Show(
+				"Pøi synchronizace nastala chyba, databáze není správnì synchronizovaná",
+				"Chyba synchronizace",
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Error
+				);
+		}
+		else if(result.HasFlag(DialogResult.OK))
+		{
+			MessageBox.Show(
+				"Synchronizace byla úspìšná.",
+				"OK",
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Information
+				);
+		}
+		else
+		{
+			MessageBox.Show(
+				"Všechna data jsou aktuální.",
+				"Není co synchronizovat",
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Information
+				);
+		}
 	}
 
 	private void HlavniOkno_FormClosing(object? sender, FormClosingEventArgs e)
@@ -119,7 +182,11 @@ public partial class HlavniOkno : Form
 
 	private void ButtonVyhledatPrihlasku_Click(object? sender, EventArgs e)
 	{
-		new OknoVyhledatPrihlasku(prihlaskyStredni, prihlaskyVyssi, AktualizovatZvolenyIndex).Show();
+		Form okno = new OknoVyhledatPrihlasku(prihlaskyStredni, prihlaskyVyssi, AktualizovatZvolenyIndex);
+		//ResizeAllControls(okno);
+		SetColorTheme(okno);
+		SetControlTheme(okno);
+		okno.Show();
 	}
 
 	private object? AktualizovatZvolenyIndex(Prihlaska nalezenaPrihlaska)
@@ -150,7 +217,10 @@ public partial class HlavniOkno : Form
 
 	private void ButtonZobrazitPrijate_Click(object? sender, EventArgs e)
 	{
-		new OknoPrijatePrihlasky(prihlaskyStredni, prihlaskyVyssi).Show();
+		Form okno = new OknoPrijatePrihlasky(prihlaskyStredni, prihlaskyVyssi);
+		okno.Show();
+		SetColorTheme(okno);
+		SetControlTheme(okno);
 	}
 
 	private void ButtonZobrazitPrihlasky_Click(object? sender, EventArgs e)
@@ -183,7 +253,10 @@ public partial class HlavniOkno : Form
 	{
 		Prihlaska? p = ZiskatZvolenouPrihlasku();
 		if (p is null) return;
-		new OknoZobrazitPrihlasku(p).Show();
+		Form okno = new OknoZobrazitPrihlasku(p);
+		okno.Show();
+		SetColorTheme(okno);
+		SetControlTheme(okno);
 	}
 
 	private void ButtonSmazatPrihlasku_Click(object? sender, EventArgs e)
@@ -366,7 +439,7 @@ public partial class HlavniOkno : Form
 	private static void ZobrazitChybuNacitani(string? line)
 	{
 		MessageBox.Show(
-				$"Nebylo možné naèíst pøihlášku s tìmito údaji: {line}",
+				$"Nebylo možné naèíst pøihlášku s tìmito údaji:\n{line}",
 				"Chyba naètení pøihlášky",
 				MessageBoxButtons.OK,
 				MessageBoxIcon.Error
@@ -406,7 +479,11 @@ public partial class HlavniOkno : Form
 
 	private void ButtonPridatPrihlasku_Click(object? sender, EventArgs e)
 	{
-		new OknoNovaPrihlaska(limits, NovaPrihlaska).Show();
+		Form okno = new OknoNovaPrihlaska(limits, NovaPrihlaska, cestaSouborStredni, cestaSouborVyssi);
+		if (okno.Disposing || okno.IsDisposed) return;
+		SetColorTheme(okno);
+		SetControlTheme(okno);
+		okno.Show();
 	}
 
 	private object? NovaPrihlaska(Prihlaska prihlaska)
@@ -511,7 +588,10 @@ public partial class HlavniOkno : Form
 	{
 		Prihlaska? p = ZiskatZvolenouPrihlasku();
 		if (p is null) return;
-		new OknoUpravitPrihlasku(p, limits, ObnovitSeznamPrihlasekUpravitInformace).Show();
+		Form okno = new OknoUpravitPrihlasku(p, limits, ObnovitSeznamPrihlasekUpravitInformace);
+		okno.Show();
+		SetColorTheme(okno);
+		SetControlTheme(okno);
 	}
 
 	private void PrepsatJedenRadekPrepsanimCelehoSouboru(Prihlaska p, string? cesta)
