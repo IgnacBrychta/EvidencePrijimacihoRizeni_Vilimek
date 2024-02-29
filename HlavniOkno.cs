@@ -5,7 +5,7 @@ using System.Web;
 
 #warning GLOBAL: designer v mnohých souborech háže chyby asi protože mnohá okna nemají dostupný výchozí konstruktor (bez argumentù), proto se asi i to dìdictví v designeru nezobrazuje
 namespace EvidencePrijimacihoRizeni_Vilimek;
- 
+
 public partial class HlavniOkno : Form
 {
 	List<PrihlaskaVyssiOdbornaSkola> prihlaskyVyssi = new();
@@ -30,13 +30,11 @@ public partial class HlavniOkno : Form
 	int nejvyssiIdStredni = -1;
 	int nejvyssiIdVyssiOdborna = -1;
 	Db db;
-	public static float scaleX;
-	public static float scaleY;
-	public static float offsetScaleX = 0f;
-	public static float offsetScaleY = 0f;
+	const string vychoziNazevSouboruStredni = "prihlasky_stredni.txt";
+	const string vychoziNazevSouboruVyssi = "prihlasky_vyssi.txt";
 	public RectangleF resizedScreen;
-	Rectangle originalScreen = new Rectangle(0, 0, 2560, 1520);
 	public static string IconFilePath => "../../../res/vilimek-s-kuretem.ico";
+	const string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Ignác\\source\\repos\\IgnacBrychta\\EvidencePrijimacihoRizeni_Vilimek\\db\\db\\evidence.mdf;Integrated Security=True;Connect Timeout=30";
 	public HlavniOkno()
 	{
 		InitializeComponent();
@@ -70,8 +68,10 @@ public partial class HlavniOkno : Form
 		toolStripMenuItemZavrit.Click += (s, e) => Close();
 		toolStripMenuItemSynchronizovat.Click += ButtonSynchronizace_Click;
 		toolStripMenuItemZobrazitPrijate.Click += ButtonZobrazitPrijate_Click;
+		toolStripMenuItem_VytvoritSouborSS.Click += ToolStripMenuItem_VytvoritSouborSS_Click;
+		toolStripMenuItem_VytvoritSouborVS.Click += ToolStripMenuItem_VytvoritSouborVS_Click;
 
-		db = new Db("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Ignác\\source\\repos\\IgnacBrychta\\EvidencePrijimacihoRizeni_Vilimek\\db\\db\\evidence.mdf;Integrated Security=True;Connect Timeout=30");
+		db = new Db(connectionString);
 		Icon = new Icon(IconFilePath);
 
 		SetColorTheme(this);
@@ -85,8 +85,8 @@ public partial class HlavniOkno : Form
 			MessageBoxButtons.OK,
 			MessageBoxIcon.Information
 		);
-		/*===========*/
-		return;
+		
+#if development
 		cestaSouborStredni = @"C:\Users\Ignác\source\repos\IgnacBrychta\EvidencePrijimacihoRizeni_Vilimek\data mock\mock prihlasky na stredni.txt";
 		cestaSouborVyssi = @"C:\Users\Ignác\source\repos\IgnacBrychta\EvidencePrijimacihoRizeni_Vilimek\data mock\mock prihlasky na vyssi odbornou.txt";
 		NacistPrihlasky(cestaSouborStredni, typeof(PrihlaskaStredniOdbornaSkola));
@@ -96,21 +96,107 @@ public partial class HlavniOkno : Form
 		ObnovitSeznamPrihlasek();
 		PovolitPrihlaskovaTlacitka();
 		textBoxCestaVyssiSkoly.Text = cestaSouborVyssi;
+#endif
+	}
+
+	private void ToolStripMenuItem_VytvoritSouborVS_Click(object? sender, EventArgs e)
+	{
+		FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog()
+		{
+			Description = "Zvolte složku pro vytvoøení souboru pro pøihlášky na VOŠ.",
+			UseDescriptionForTitle = true,
+			ShowNewFolderButton = true
+		};
+		DialogResult result = folderBrowserDialog.ShowDialog();
+		if (result == DialogResult.OK)
+		{
+			VytvoritPrihlaskovySoubor(folderBrowserDialog.SelectedPath, typeof(PrihlaskaVyssiOdbornaSkola));
+			_ = MessageBox.Show(
+				"Soubor vytvoøen, ale nezvolen.",
+				"Soubor vytvoøen.",
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Information
+				);
+		}
+		else
+		{
+			_ = MessageBox.Show(
+				"Nebyla zvolena složka, soubor nevytvoøen.",
+				"Soubor nevytvoøen",
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Warning
+				);
+		}
+	}
+
+	private void ToolStripMenuItem_VytvoritSouborSS_Click(object? sender, EventArgs e)
+	{
+		FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog()
+		{
+			Description = "Zvolte složku pro vytvoøení souboru pro pøihlášky na SŠ.",
+			UseDescriptionForTitle = true,
+			ShowNewFolderButton = true
+		};
+		DialogResult result = folderBrowserDialog.ShowDialog();
+		if (result == DialogResult.OK)
+		{
+			VytvoritPrihlaskovySoubor(folderBrowserDialog.SelectedPath, typeof(PrihlaskaStredniOdbornaSkola));
+			_ = MessageBox.Show(
+				"Soubor vytvoøen, ale nezvolen.",
+				"Soubor vytvoøen.",
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Information
+				);
+		}
+		else
+		{
+			_ = MessageBox.Show(
+				"Nebyla zvolena složka, soubor nevytvoøen.",
+				"Soubor nevytvoøen",
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Warning
+				);
+		}
+	}
+
+	private static void VytvoritPrihlaskovySoubor(string cesta, Type typ)
+	{
+		bool stredni = typ == typeof(PrihlaskaStredniOdbornaSkola);
+		using FileStream fs = new FileStream(
+			stredni
+			? cesta + "/" + vychoziNazevSouboruStredni 
+			: cesta + "/" + vychoziNazevSouboruVyssi,
+			FileMode.CreateNew,
+			FileAccess.ReadWrite
+			);
+		using StreamWriter sw = new StreamWriter(fs);
+		sw.WriteLine("MaxId=0");
+		sw.WriteLine(
+			stredni
+			? PrihlaskaStredniOdbornaSkola.ZiskatHeader()
+			: PrihlaskaVyssiOdbornaSkola.ZiskatHeader()
+			);
 	}
 
 	public static void SetColorTheme(Control parent)
 	{
+#if !ForceBlack
+		return;
+#else
 		foreach (Control control in parent.Controls)
 		{
 			SetControlTheme(control);
 			if (control.HasChildren) SetColorTheme(control);
 		}
+#endif
 	}
 
 	public static void SetControlTheme(Control control)
 	{
+#if ForceBlack
 		control.BackColor = Color.Black;
 		control.ForeColor = Color.White;
+#endif
 	}
 	private void HlavniOkno_FormClosed(object? sender, FormClosedEventArgs e)
 	{
@@ -138,7 +224,7 @@ public partial class HlavniOkno : Form
 		}
 		smazanePrihlasky.Clear();
 
-		if(result.HasFlag(DialogResult.Abort))
+		if (result.HasFlag(DialogResult.Abort))
 		{
 			MessageBox.Show(
 				"Pøi synchronizace nastala chyba, databáze není správnì synchronizovaná",
@@ -147,7 +233,7 @@ public partial class HlavniOkno : Form
 				MessageBoxIcon.Error
 				);
 		}
-		else if(result.HasFlag(DialogResult.OK))
+		else if (result.HasFlag(DialogResult.OK))
 		{
 			MessageBox.Show(
 				"Synchronizace byla úspìšná.",
@@ -285,7 +371,7 @@ public partial class HlavniOkno : Form
 	{
 		OpenFileDialog pfd = new OpenFileDialog()
 		{
-			FileName = "prihlasky_vyssi.txt",
+			FileName = vychoziNazevSouboruVyssi,
 			DefaultExt = "*.txt",
 			InitialDirectory = Directory.GetCurrentDirectory(),
 			Filter = "prihlasky_vyssi.txt|*.txt",
@@ -311,7 +397,7 @@ public partial class HlavniOkno : Form
 	{
 		OpenFileDialog pfd = new OpenFileDialog()
 		{
-			FileName = "prihlasky_stredni.txt",
+			FileName = vychoziNazevSouboruStredni,
 			DefaultExt = "*.txt",
 			InitialDirectory = Directory.GetCurrentDirectory(),
 			Filter = "prihlasky_stredni.txt|*.txt",

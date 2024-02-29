@@ -2,7 +2,7 @@ MaxId=503
 Id;jmeno;prijmeni;datumNarozeni;obor;bodyPrijimacihoRizeni;prijat
 2;Poltergeist;Prendergast;01.11.1899;1;35;True
 4;ZbožňujuHentai;ProtoToStuduju;06.09.1769;2;69;True
-5;Fata;Morgana;26.09.2003;0;10;True
+5;Fata;Morgana;26.09.2003;0;10;False
 7;Curt;Shimony;18.01.1999;0;77;False
 8;Joshuah;Malý;21.11.1999;3;420;False
 9;Christean;MacIver;16.03.2000;2;67;false
@@ -11,9 +11,8 @@ Id;jmeno;prijmeni;datumNarozeni;obor;bodyPrijimacihoRizeni;prijat
 12;Calhoun;Predohl;24.01.1998;0;32;true
 13;Emelyne;Cunney;01.04.2001;6;99;False
 14;Saw;Danby;23.01.1999;4;5;false
-15;Isidro;Mc Mechan;30.05.1996;3;94;true
+15;Isidro;Mc Mechan;30.05.1996;0;100;True
 16;Amandy;Cridland;09.10.1995;1;28;false
-17;Keefer;May;24.08.2003;3;10;false
 18;Vaughan;Trickey;06.10.2004;0;46;false
 19;Florrie;Vamplew;02.05.2000;2;69;false
 20;Dyna;Diperaus;24.10.2001;1;69;false

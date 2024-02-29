@@ -43,4 +43,9 @@ public sealed class PrihlaskaVyssiOdbornaSkola : Prihlaska
 	{
 		return base.ZiskatTvarProZapsani(limits) + limits.Delimiter + prumerZnamekMaturitniZkousky.ToString();
 	}
+
+	public static string ZiskatHeader()
+	{
+		return "Id;jmeno;prijmeni;datumNarozeni;obor;bodyPrijimacihoRizeni;prijat;prumerZnamekMaturitniZkousky";
+	}
 }

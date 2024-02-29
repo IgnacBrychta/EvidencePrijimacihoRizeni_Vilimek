@@ -1,6 +1,6 @@
 MaxId=10506
 Id;jmeno;prijmeni;datumNarozeni;obor;bodyPrijimacihoRizeni;prijat;prumerZnamekMaturitniZkousky
-10001;Gibb;Bangs;30.06.1999;3;95;True;3.57
+10001;Gibb___;Bangs;30.06.1999;3;95;True;3.57
 10002;Winnie;Dobrowski;20.09.1998;4;17;True;4.46
 10003;Carie;Risson;15.07.2000;4;20;True;4.51
 10004;Laina;Halifax;21.02.1995;2;28;True;3.55
@@ -65,7 +65,7 @@ Id;jmeno;prijmeni;datumNarozeni;obor;bodyPrijimacihoRizeni;prijat;prumerZnamekMa
 10064;Adena;Klagges;26.07.2001;0;93;True;2.45
 10065;Tyne;Lancett;15.07.1998;1;28;True;2.93
 10066;Trey;Pears;23.07.1995;0;10;False;4.77
-10067;Olympia;Croney;11.10.2004;1;74;False;1.45
+10067;Olympia____;Croney;11.10.2004;1;74;False;1.45
 10068;Stephannie;Picker;28.09.2001;3;53;False;4.38
 10069;Heindrick;Klimuk;11.11.2004;0;65;False;4.55
 10070;Lyndell;Priddis;17.04.1997;3;90;True;4.06
@@ -86,7 +86,7 @@ Id;jmeno;prijmeni;datumNarozeni;obor;bodyPrijimacihoRizeni;prijat;prumerZnamekMa
 10085;Kimmi;Hunnisett;18.08.2001;2;10;True;1.94
 10086;Briana;Dorran;25.04.1998;4;71;True;4.64
 10087;Athena;Newis;06.10.1996;1;86;True;4.64
-10088;Adriaens;Bessett;09.03.1995;3;37;False;1.17
+10088;Adriaens;public static void Main(string[] args) {};09.03.1995;3;37;True;1.17
 10089;Christiana;Wyard;31.07.2004;3;0;False;1.01
 10090;Kacie;Aistrop;28.12.1997;3;20;True;2.93
 10091;Felicity;Crennan;13.05.2004;1;42;False;2.38

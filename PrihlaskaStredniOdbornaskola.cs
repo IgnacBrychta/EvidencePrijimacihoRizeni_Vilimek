@@ -17,6 +17,11 @@ public sealed class PrihlaskaStredniOdbornaSkola : Prihlaska
 
 	public override int IndexOboru => (int)obor;
 
+	public static string ZiskatHeader()
+	{
+		return "Id;jmeno;prijmeni;datumNarozeni;obor;bodyPrijimacihoRizeni;prijat";
+	}
+
 	public override string ZiskatZakladniInformace()
 	{
 		return base.ZiskatZakladniInformace() + $" - {obor}";

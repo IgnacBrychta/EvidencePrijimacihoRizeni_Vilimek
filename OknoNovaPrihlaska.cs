@@ -15,16 +15,12 @@ public partial class OknoNovaPrihlaska : VychoziPrihlaskoveOkno
 	DbValuesLimits limits;
 	Func<Prihlaska, object?> NovaPrihlaskaMetoda;
 	bool prednostnePrijat = false;
-	string? cestaStredni;
-	string? cestaVyssi;
 	public OknoNovaPrihlaska(DbValuesLimits limits, Func<Prihlaska, object?> NovaPrihlaskaMetoda, string? cestaStredni, string? cestaVyssi) : base(null!)
 	{
 		InitializeComponent();
 		this.limits = limits;
 		this.NovaPrihlaskaMetoda = NovaPrihlaskaMetoda;
 		
-		this.cestaStredni = cestaStredni;
-		this.cestaVyssi = cestaVyssi;
 		if(cestaStredni is null || cestaVyssi is null)
 		{
 			MessageBox.Show(

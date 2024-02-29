@@ -124,7 +124,6 @@ internal class Db : IDisposable
 		}
 		return ovlivneneRadky == 1 ? DialogResult.OK : DialogResult.Abort;
 	}
-#warning změnit rozsah id u přihlášek
 	private void NastavitSpolecneParametry(SqlCommand prikaz, Prihlaska prihlaska, string textPrikazu)
 	{
 		prikaz.CommandText = textPrikazu;

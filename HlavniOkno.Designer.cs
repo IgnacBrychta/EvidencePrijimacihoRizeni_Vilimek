@@ -67,6 +67,10 @@
 			toolStripMenuItemZobrazitPrijate = new ToolStripMenuItem();
 			toolStripDropDownButtonSynchronizace = new ToolStripDropDownButton();
 			toolStripMenuItemSynchronizovat = new ToolStripMenuItem();
+			toolStripMenuItem2 = new ToolStripMenuItem();
+			toolStripSeparator2 = new ToolStripSeparator();
+			toolStripMenuItem_VytvoritSouborSS = new ToolStripMenuItem();
+			toolStripMenuItem_VytvoritSouborVS = new ToolStripMenuItem();
 			groupBox_prihlaskyStredni.SuspendLayout();
 			groupBox_prihlaskyVyssi.SuspendLayout();
 			groupBox3.SuspendLayout();
@@ -298,7 +302,7 @@
 			// toolStripDropDownButtonSoubor
 			// 
 			toolStripDropDownButtonSoubor.DisplayStyle = ToolStripItemDisplayStyle.Text;
-			toolStripDropDownButtonSoubor.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem1, toolStripSeparator1, toolStripMenuItemZavrit });
+			toolStripDropDownButtonSoubor.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem1, toolStripSeparator1, toolStripMenuItem2, toolStripSeparator2, toolStripMenuItemZavrit });
 			toolStripDropDownButtonSoubor.Image = (Image)resources.GetObject("toolStripDropDownButtonSoubor.Image");
 			toolStripDropDownButtonSoubor.ImageTransparentColor = Color.Magenta;
 			toolStripDropDownButtonSoubor.Name = "toolStripDropDownButtonSoubor";
@@ -309,30 +313,30 @@
 			// 
 			toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemNacistStredni, toolStripMenuItemNacistVyssi });
 			toolStripMenuItem1.Name = "toolStripMenuItem1";
-			toolStripMenuItem1.Size = new Size(147, 22);
+			toolStripMenuItem1.Size = new Size(218, 22);
 			toolStripMenuItem1.Text = "Načíst soubor";
 			// 
 			// toolStripMenuItemNacistStredni
 			// 
 			toolStripMenuItemNacistStredni.Name = "toolStripMenuItemNacistStredni";
-			toolStripMenuItemNacistStredni.Size = new Size(96, 22);
+			toolStripMenuItemNacistStredni.Size = new Size(180, 22);
 			toolStripMenuItemNacistStredni.Text = "SŠ";
 			// 
 			// toolStripMenuItemNacistVyssi
 			// 
 			toolStripMenuItemNacistVyssi.Name = "toolStripMenuItemNacistVyssi";
-			toolStripMenuItemNacistVyssi.Size = new Size(96, 22);
+			toolStripMenuItemNacistVyssi.Size = new Size(180, 22);
 			toolStripMenuItemNacistVyssi.Text = "VOŠ";
 			// 
 			// toolStripSeparator1
 			// 
 			toolStripSeparator1.Name = "toolStripSeparator1";
-			toolStripSeparator1.Size = new Size(144, 6);
+			toolStripSeparator1.Size = new Size(215, 6);
 			// 
 			// toolStripMenuItemZavrit
 			// 
 			toolStripMenuItemZavrit.Name = "toolStripMenuItemZavrit";
-			toolStripMenuItemZavrit.Size = new Size(147, 22);
+			toolStripMenuItemZavrit.Size = new Size(218, 22);
 			toolStripMenuItemZavrit.Text = "Zavřít";
 			// 
 			// toolStripDropDownButtonPrihlasky
@@ -403,6 +407,30 @@
 			toolStripMenuItemSynchronizovat.Size = new Size(181, 22);
 			toolStripMenuItemSynchronizovat.Text = "Synchronizovat s DB";
 			// 
+			// toolStripMenuItem2
+			// 
+			toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem_VytvoritSouborSS, toolStripMenuItem_VytvoritSouborVS });
+			toolStripMenuItem2.Name = "toolStripMenuItem2";
+			toolStripMenuItem2.Size = new Size(218, 22);
+			toolStripMenuItem2.Text = "Vytvořit přihláškový soubor";
+			// 
+			// toolStripSeparator2
+			// 
+			toolStripSeparator2.Name = "toolStripSeparator2";
+			toolStripSeparator2.Size = new Size(215, 6);
+			// 
+			// toolStripMenuItem_VytvoritSouborSS
+			// 
+			toolStripMenuItem_VytvoritSouborSS.Name = "toolStripMenuItem_VytvoritSouborSS";
+			toolStripMenuItem_VytvoritSouborSS.Size = new Size(180, 22);
+			toolStripMenuItem_VytvoritSouborSS.Text = "SŠ";
+			// 
+			// toolStripMenuItem_VytvoritSouborVS
+			// 
+			toolStripMenuItem_VytvoritSouborVS.Name = "toolStripMenuItem_VytvoritSouborVS";
+			toolStripMenuItem_VytvoritSouborVS.Size = new Size(180, 22);
+			toolStripMenuItem_VytvoritSouborVS.Text = "VOŠ";
+			// 
 			// HlavniOkno
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
@@ -471,5 +499,9 @@
 		private ToolStripMenuItem toolStripMenuItemSynchronizovat;
 		private ToolStripMenuItem toolStripMenuItemZobrazitPrijate;
 		private Button buttonSynchronizovat;
+		private ToolStripMenuItem toolStripMenuItem2;
+		private ToolStripMenuItem toolStripMenuItem_VytvoritSouborSS;
+		private ToolStripMenuItem toolStripMenuItem_VytvoritSouborVS;
+		private ToolStripSeparator toolStripSeparator2;
 	}
 }
